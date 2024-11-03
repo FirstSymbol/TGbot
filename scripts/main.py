@@ -15,7 +15,7 @@ def Start(message:Message):
 @bot.message_handler()
 def mainMenuHandler(message:Message):
     if(message.text == 'Главное меню:'):
-        defaultmessages.SendMainMenu(bot,message)
+        defaultmessages.SendMainMenu(bot,message.chat.id)
     else:
         defaultmessages.MessageNotFounded(bot,message)
 
