@@ -24,19 +24,19 @@ def DostoprimPageKeybord(page:int):
             markup.row(InlineKeyboardButton('[7] Кобринский парк им.Суворова', callback_data='dostoprim_obj7'),
                        InlineKeyboardButton('[8] Музей железнодорожной техники', callback_data='dostoprim_obj8'))
             markup.row(InlineKeyboardButton('[9] Спасо-Преображенский монастырь', callback_data='dostoprim_obj9'),
-                       InlineKeyboardButton('[10] Сапегский дворец', callback_data='dostoprim_obj10'))
+                       InlineKeyboardButton('[10] Музей Белорусского Полесья', callback_data='dostoprim_obj10'))
             markup.row(InlineKeyboardButton('Дальше', callback_data='dostoprim_page2'))
             markup.row(InlineKeyboardButton('В главное меню',callback_data='to_mainmenu'))
         case 2:
             markup.row(InlineKeyboardButton('[11] Музей природы Беловежской пущи', callback_data='dostoprim_obj11'),
                        InlineKeyboardButton('[12] Холмские ворота', callback_data='dostoprim_obj12'))
-            markup.row(InlineKeyboardButton('[13] Церковь Святого Николая', callback_data='dostoprim_obj13'),
+            markup.row(InlineKeyboardButton('[13] Музей обороны Брестской крепости', callback_data='dostoprim_obj13'),
                        InlineKeyboardButton('[14] Усадьба Немцевичей', callback_data='dostoprim_obj14'))
-            markup.row(InlineKeyboardButton('[15] Свято-Воскресенский собор', callback_data='dostoprim_obj15'),
-                       InlineKeyboardButton('[16] Миквежская пустыня', callback_data='dostoprim_obj16'))
+            markup.row(InlineKeyboardButton('[15] Музей народного творчества "Бездежский фартушок"', callback_data='dostoprim_obj15'),
+                       InlineKeyboardButton('[16] Барановичский Парк животных', callback_data='dostoprim_obj16'))
             markup.row(InlineKeyboardButton('[17] Пинская набережная и речной порт', callback_data='dostoprim_obj17'),
-                       InlineKeyboardButton('[18] Мемориальный комплекс "Дубово"', callback_data='dostoprim_obj18'))
-            markup.row(InlineKeyboardButton('[19] Ружанская церковь св. Казимира', callback_data='dostoprim_obj19'),
+                       InlineKeyboardButton('[18] Костел Сердца Иисуса', callback_data='dostoprim_obj18'))
+            markup.row(InlineKeyboardButton('[19] Хмелёвский Спасо-Преображенский монастырь', callback_data='dostoprim_obj19'),
                        InlineKeyboardButton('[20] Кобринская синагога', callback_data='dostoprim_obj20'))
             markup.row(InlineKeyboardButton('Назад', callback_data='dostoprim_page1'),InlineKeyboardButton('Дальше', callback_data='dostoprim_page3'))
             markup.row(InlineKeyboardButton('В главное меню',callback_data='to_mainmenu'))
@@ -72,27 +72,27 @@ def DostoprimPageKeybord(page:int):
     return markup
 
 def DostoprimObjKeybord(obj:int):
+    global page
     markup = InlineKeyboardMarkup()
     back = str(obj-1)
     next = str(obj+1)
-    
-    page:str
     
     if 10 >= obj > 0:page='1'
     elif 20 >= obj > 10:page='2'
     elif 30 >= obj > 20:page='3'
     elif 40 >= obj > 30:page='4'
-    if obj > 1 & obj < 40:
-        markup.row(InlineKeyboardButton('Назад', callback_data=('dostoprim_obj'+back)),
-                    InlineKeyboardButton('Дальше', callback_data=('dostoprim_obj'+next)))
-        markup.row(InlineKeyboardButton('К списку', callback_data=('dostoprim_page' + page)),
-                    InlineKeyboardButton('В главное меню', callback_data='to_mainmenu'))
-    elif obj == 40:
+
+    if obj >= 40:
         markup.row(InlineKeyboardButton('Назад', callback_data=('dostoprim_obj'+back)))
         markup.row(InlineKeyboardButton('К списку', callback_data=('dostoprim_page' + page)),
                     InlineKeyboardButton('В главное меню', callback_data='to_mainmenu'))
-    elif obj == 1:
+    elif obj <= 1:
         markup.row(InlineKeyboardButton('Дальше', callback_data=('dostoprim_obj'+next)))
+        markup.row(InlineKeyboardButton('К списку', callback_data=('dostoprim_page' + page)),
+                    InlineKeyboardButton('В главное меню', callback_data='to_mainmenu'))
+    elif obj > 1 & obj < 40:
+        markup.row(InlineKeyboardButton('Назад', callback_data=('dostoprim_obj'+back)),
+                    InlineKeyboardButton('Дальше', callback_data=('dostoprim_obj'+next)))
         markup.row(InlineKeyboardButton('К списку', callback_data=('dostoprim_page' + page)),
                     InlineKeyboardButton('В главное меню', callback_data='to_mainmenu'))
     
