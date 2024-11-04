@@ -1,10 +1,10 @@
 import telebot
-import keyboards
+from telebot.types import CallbackQuery
+from telebot.types import Message
+
 import callbackHandlers
 import defaultmessages
-from telebot import types
-from telebot.types import Message
-from telebot.types import CallbackQuery
+import keyboards
 
 bot = telebot.TeleBot('7918252571:AAHi5YwxTGIh73y3d-o0DI5Y5vh0amfiqpU')
 
@@ -42,14 +42,14 @@ def mainHandler(callback:CallbackQuery):
             callbackHandlers.dostoprim_page2_click(bot,callback.message)
         case 'dostoprim_page3':
             callbackHandlers.dostoprim_page3_click(bot,callback.message)
-        case 'dostoprim_page4':
-            callbackHandlers.dostoprim_page4_click(bot,callback.message)
             
     # Итерируемые коллбеки
     match callback.data[0:13]:
         case 'dostoprim_obj':
             callbackHandlers.dostoprim_obj_click(bot,callback.message,int(callback.data[13:]))
-            
-    
-    
+
+@bot.message_handler(content_types=['location'])
+def FindDostoprim(message:Message):
+    defaultmessages.GeoMessage(bot,message)
+
 bot.polling(non_stop=True)
