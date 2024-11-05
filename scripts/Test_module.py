@@ -18,7 +18,7 @@ class TestStartPage:
 class Test:
     name = str('Default Test')
     startPage:TestStartPage
-    answers: list[int]
+    answers: list[int] = list()
 
     id:int
     questions:list[TestQuestion] = []
@@ -60,6 +60,12 @@ class Test:
                               chat_id=message.chat.id,
                               message_id=message.message_id,
                               reply_markup=self.CreateQuestionKeyboard(questionID))
+
+    def GetAnswerInfo(self):
+        result = 0
+        for answer in self.answers:
+            result += answer
+        return result
 
 
 

@@ -97,10 +97,10 @@ def DostoprimObjKeybord(obj:int):
 
 def GetTestsKeybord():
     markup = InlineKeyboardMarkup()
-    but1 = InlineKeyboardButton('Тест1',callback_data='load_test0')
-    but2 = InlineKeyboardButton('Тест2',callback_data='load_test1')
-    but3 = InlineKeyboardButton('Тест3',callback_data='load_test2')
-    but4 = InlineKeyboardButton('Тест4',callback_data='load_test3')
+    but1 = InlineKeyboardButton('Тест1',callback_data='load_test_0')
+    but2 = InlineKeyboardButton('Тест2',callback_data='load_test_1')
+    but3 = InlineKeyboardButton('Тест3',callback_data='load_test_2')
+    but4 = InlineKeyboardButton('Тест4',callback_data='load_test_3')
     markup.add(but1)
     markup.add(but2)
     markup.add(but3)

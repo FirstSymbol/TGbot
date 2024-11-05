@@ -39,3 +39,7 @@ def toMainMenu_geo_click(bot:telebot.TeleBot,message:Message):
     defaultmessages.SendMainMenuRemoveKeyboard(bot,message)
 def start_test_click(bot:telebot.TeleBot,message:Message):
     defaultmessages.TestingMessages(bot,message,1)
+
+# ----------------------------------
+def answer_test_click(bot:telebot.TeleBot,message:Message,values:list[str]):
+    pass

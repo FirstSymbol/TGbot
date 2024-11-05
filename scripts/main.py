@@ -79,16 +79,31 @@ def mainHandler(callback:CallbackQuery):
                 defaultmessages.TestingMessages(bot, callback.message, int(callback.data[9:]))
     match callback.data[0:9]:
         case 'load_test':
-            tests[int(callback.data[9])].LoadTest(bot,callback.message)
+            values = callback.data[10:].split('_')
+            tests[int(values[0])].LoadTest(bot,callback.message)
 
     match callback.data[0:10]:
         case 'start_test':
-            tests[int(callback.data[11])].LoadQuestion(bot,callback.message,int(callback.data[13:]))
+            values = callback.data[11:].split('_')
+            tests[int(values[0])].LoadQuestion(bot,callback.message,int(values[1]))
+            tests[int(values[0])].answers.clear()
 
     match callback.data[0:11]:
         case 'answer_test':
-            if (tests[int(callback.data[12])])
-            tests[int(callback.data[12])].LoadQuestion(bot,callback.message,int(callback.data[14])+1)
+            values = callback.data[12:].split('_')
+            if (values[2] == values[3]):
+                print('Верный ответ')
+                tests[int(values[0])].answers.append(1)
+            else:
+                tests[int(values[0])].answers.append(0)
+                print('Не верный ответ')
+            if (int(values[1]) < len(tests[int(values[0])].questions)-1):
+                tests[int(values[0])].LoadQuestion(bot,callback.message,int(values[1])+1)
+            else:
+                bot.edit_message_text(text=f'Кол-во верных ответов = {tests[int(values[0])].GetAnswerInfo()}',
+                                      chat_id=callback.message.chat.id,
+                                      message_id=callback.message.message_id,
+                                      reply_markup=keyboards.ToMainMenuKeyboard())
 
 @bot.message_handler(content_types=['location'])
 def FindDostoprim(message:Message):
