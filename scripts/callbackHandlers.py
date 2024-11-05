@@ -12,7 +12,7 @@ def mainMenu_button2_click(bot:telebot.TeleBot,message:Message):
     #bot.edit_message_text('Нажата кнопка 2',message.chat.id,message.message_id, reply_markup=keyboards.ToMainMenuKeyboard())
 
 def mainMenu_button3_click(bot:telebot.TeleBot,message:Message):
-    defaultmessages.EditTests(bot,message)
+    defaultmessages.EditTestsMenu(bot,message)
 
 def mainMenu_button4_click(bot:telebot.TeleBot,message:Message):
     defaultmessages.EditGeneralInformation(bot,message)

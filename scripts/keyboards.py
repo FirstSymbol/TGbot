@@ -94,24 +94,17 @@ def DostoprimObjKeybord(obj:int):
     
     return markup
 
-def StartTestKeybord():
-    markup = types.InlineKeyboardMarkup()
-    but1 = types.InlineKeyboardButton(text='Начать тест',
-                                      callback_data='start_test')
-    but2 = InlineKeyboardButton(text='В главное меню',
-                                callback_data='to_mainmenu')
+
+def GetTestsKeybord():
+    markup = InlineKeyboardMarkup()
+    but1 = InlineKeyboardButton('Тест1',callback_data='load_test0')
+    but2 = InlineKeyboardButton('Тест2',callback_data='load_test1')
+    but3 = InlineKeyboardButton('Тест3',callback_data='load_test2')
+    but4 = InlineKeyboardButton('Тест4',callback_data='load_test3')
     markup.add(but1)
     markup.add(but2)
-
-    return markup
-
-def TestKeybord(correct:chr,num:int):
-    markup = InlineKeyboardMarkup()
-    but1 = InlineKeyboardButton('а',callback_data='otvet_a'+correct+str(num)+str(num+1))
-    but2 = InlineKeyboardButton('b',callback_data='otvet_b'+correct+str(num)+str(num+1))
-    but3 = InlineKeyboardButton('c',callback_data='otvet_c'+correct+str(num)+str(num+1))
-    but4 = InlineKeyboardButton('d',callback_data='otvet_d'+correct+str(num)+str(num+1))
-    markup.row(but1,but2,but3,but4)
+    markup.add(but3)
+    markup.add(but4)
     return markup
 
 

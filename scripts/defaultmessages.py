@@ -340,11 +340,11 @@ def EditGeneralInformation(bot:TeleBot,message:Message):
                           message_id=message.message_id,
                           reply_markup=keyboards.ToMainMenuKeyboard())
 
-def EditTests(bot:TeleBot,message:Message):
-    bot.edit_message_text(text='Тест на знание городов достопримечательностей',
+def EditTestsMenu(bot:TeleBot,message:Message):
+    bot.edit_message_text(text='Тесты',
                           chat_id=message.chat.id,
                           message_id=message.message_id,
-                          reply_markup=keyboards.StartTestKeybord())
+                          reply_markup=keyboards.GetTestsKeybord())
 
 anwsers = []
 

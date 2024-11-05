@@ -1,13 +1,32 @@
 import telebot
 from telebot.types import CallbackQuery
 from telebot.types import Message
-
+import Test_module
 import callbackHandlers
 import defaultmessages
 import keyboards
+from Test_module import Test
+from Test_module import TestQuestion
+from Test_module import TestStartPage
 from defaultmessages import anwsers
 
 bot = telebot.TeleBot('7918252571:AAHi5YwxTGIh73y3d-o0DI5Y5vh0amfiqpU')
+tests:list[Test] = list()
+tests.append(Test(testID=0,
+                  questionCount=10,
+                  startPage=TestStartPage('Это начальная страница теста 1'))
+             )
+tests[0].questions[0].text = 'Вопрос1'
+tests[0].questions[1].text = 'Вопрос2'
+tests[0].questions[2].text = 'Вопрос3'
+tests[0].questions[3].text = 'Вопрос4'
+tests[0].questions[4].text = 'Вопрос5'
+tests[0].questions[5].text = 'Вопрос6'
+tests[0].questions[6].text = 'Вопрос7'
+tests[0].questions[7].text = 'Вопрос8'
+tests[0].questions[8].text = 'Вопрос9'
+tests[0].questions[9].text = 'Вопрос10'
+
 
 @bot.message_handler(commands=['start'])
 def Start(message:Message):
@@ -37,8 +56,6 @@ def mainHandler(callback:CallbackQuery):
             callbackHandlers.mainMenu_button4_click(bot,callback.message)
         case 'to_mainmenu':
             callbackHandlers.toMainMenu_click(bot,callback.message)
-        case 'start_test':
-            callbackHandlers.start_test_click(bot,callback.message)
         case 'dostoprim_page1':
             callbackHandlers.dostoprim_page1_click(bot,callback.message)
         case 'dostoprim_page2':
@@ -60,6 +77,18 @@ def mainHandler(callback:CallbackQuery):
             else:
                 defaultmessages.anwsers.append(0)
                 defaultmessages.TestingMessages(bot, callback.message, int(callback.data[9:]))
+    match callback.data[0:9]:
+        case 'load_test':
+            tests[int(callback.data[9])].LoadTest(bot,callback.message)
+
+    match callback.data[0:10]:
+        case 'start_test':
+            tests[int(callback.data[11])].LoadQuestion(bot,callback.message,int(callback.data[13:]))
+
+    match callback.data[0:11]:
+        case 'answer_test':
+            if (tests[int(callback.data[12])])
+            tests[int(callback.data[12])].LoadQuestion(bot,callback.message,int(callback.data[14])+1)
 
 @bot.message_handler(content_types=['location'])
 def FindDostoprim(message:Message):
