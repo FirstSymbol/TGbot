@@ -1,5 +1,3 @@
-from gc import callbacks
-
 from telebot import types
 from telebot.types import InlineKeyboardButton
 from telebot.types import InlineKeyboardMarkup

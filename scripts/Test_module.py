@@ -56,10 +56,19 @@ class Test:
 
 
     def LoadQuestion(self,bot:telebot.TeleBot,message:telebot.types.Message,questionID:int):
-        bot.edit_message_text(text=self.questions[questionID].text,
-                              chat_id=message.chat.id,
-                              message_id=message.message_id,
-                              reply_markup=self.CreateQuestionKeyboard(questionID))
+        if message.photo:
+            chatID = message.chat.id
+            bot.delete_message(chat_id=chatID,
+                               message_id=message.message_id)
+
+            bot.send_message(text=self.questions[questionID].text,
+                                  chat_id=message.chat.id,
+                                  reply_markup=self.CreateQuestionKeyboard(questionID))
+        else:
+            bot.edit_message_text(text=self.questions[questionID].text,
+                                  chat_id=message.chat.id,
+                                  message_id=message.message_id,
+                                  reply_markup=self.CreateQuestionKeyboard(questionID))
 
     def GetAnswerInfo(self):
         result = 0

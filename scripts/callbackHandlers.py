@@ -1,6 +1,7 @@
 import telebot
 from telebot.types import Message
 
+import Test_module
 import defaultmessages
 
 
@@ -41,5 +42,14 @@ def start_test_click(bot:telebot.TeleBot,message:Message):
     defaultmessages.TestingMessages(bot,message,1)
 
 # ----------------------------------
-def answer_test_click(bot:telebot.TeleBot,message:Message,values:list[str]):
-    pass
+def answer_test_click(bot:telebot.TeleBot,message:Message,values:list[str],tests:list[Test_module.Test]):
+    if (values[2] == values[3]):
+        print('Верный ответ')
+        tests[int(values[0])].answers.append(1)
+    else:
+        tests[int(values[0])].answers.append(0)
+        print('Не верный ответ')
+    if (int(values[1]) < len(tests[int(values[0])].questions) - 1):
+        tests[int(values[0])].LoadQuestion(bot,message, int(values[1]) + 1)
+    else:
+        defaultmessages.FinishTest(bot,message, values, tests)

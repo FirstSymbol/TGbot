@@ -1,14 +1,12 @@
 import telebot
 from telebot.types import CallbackQuery
 from telebot.types import Message
-import Test_module
+
 import callbackHandlers
 import defaultmessages
 import keyboards
 from Test_module import Test
-from Test_module import TestQuestion
 from Test_module import TestStartPage
-from defaultmessages import anwsers
 
 bot = telebot.TeleBot('7918252571:AAHi5YwxTGIh73y3d-o0DI5Y5vh0amfiqpU')
 tests:list[Test] = list()
@@ -17,7 +15,9 @@ tests.append(Test(testID=0,
                   startPage=TestStartPage('Это начальная страница теста 1'))
              )
 tests[0].questions[0].text = 'Вопрос1'
+tests[0].questions[0].correctAnswer = 2
 tests[0].questions[1].text = 'Вопрос2'
+tests[0].questions[1].correctAnswer = 3
 tests[0].questions[2].text = 'Вопрос3'
 tests[0].questions[3].text = 'Вопрос4'
 tests[0].questions[4].text = 'Вопрос5'
@@ -70,13 +70,7 @@ def mainHandler(callback:CallbackQuery):
 
     match callback.data[0:6]:
         case 'otvet_':
-            print(callback.data)
-            if callback.data[6] == callback.data[7]:
-                defaultmessages.anwsers.append(1)
-                defaultmessages.TestingMessages(bot,callback.message,int(callback.data[9:]))
-            else:
-                defaultmessages.anwsers.append(0)
-                defaultmessages.TestingMessages(bot, callback.message, int(callback.data[9:]))
+            pass
     match callback.data[0:9]:
         case 'load_test':
             values = callback.data[10:].split('_')
@@ -91,19 +85,11 @@ def mainHandler(callback:CallbackQuery):
     match callback.data[0:11]:
         case 'answer_test':
             values = callback.data[12:].split('_')
-            if (values[2] == values[3]):
-                print('Верный ответ')
-                tests[int(values[0])].answers.append(1)
-            else:
-                tests[int(values[0])].answers.append(0)
-                print('Не верный ответ')
-            if (int(values[1]) < len(tests[int(values[0])].questions)-1):
-                tests[int(values[0])].LoadQuestion(bot,callback.message,int(values[1])+1)
-            else:
-                bot.edit_message_text(text=f'Кол-во верных ответов = {tests[int(values[0])].GetAnswerInfo()}',
-                                      chat_id=callback.message.chat.id,
-                                      message_id=callback.message.message_id,
-                                      reply_markup=keyboards.ToMainMenuKeyboard())
+            callbackHandlers.answer_test_click(bot=bot,
+                                               message=callback.message,
+                                               values=values,
+                                               tests=tests)
+
 
 @bot.message_handler(content_types=['location'])
 def FindDostoprim(message:Message):
