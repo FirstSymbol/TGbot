@@ -5,6 +5,7 @@ from telebot.types import Message
 import callbackHandlers
 import defaultmessages
 import keyboards
+from defaultmessages import anwsers
 
 bot = telebot.TeleBot('7918252571:AAHi5YwxTGIh73y3d-o0DI5Y5vh0amfiqpU')
 
@@ -14,7 +15,7 @@ def Start(message:Message):
 
 @bot.message_handler()
 def mainMenuHandler(message:Message):
-    if(message.text == 'Главное меню:'):
+    if(message.text == 'В главное меню'):
         defaultmessages.SendMainMenu(bot,message.chat.id)
     else:
         defaultmessages.MessageNotFounded(bot,message)
@@ -36,6 +37,8 @@ def mainHandler(callback:CallbackQuery):
             callbackHandlers.mainMenu_button4_click(bot,callback.message)
         case 'to_mainmenu':
             callbackHandlers.toMainMenu_click(bot,callback.message)
+        case 'start_test':
+            callbackHandlers.start_test_click(bot,callback.message)
         case 'dostoprim_page1':
             callbackHandlers.dostoprim_page1_click(bot,callback.message)
         case 'dostoprim_page2':
@@ -47,6 +50,16 @@ def mainHandler(callback:CallbackQuery):
     match callback.data[0:13]:
         case 'dostoprim_obj':
             callbackHandlers.dostoprim_obj_click(bot,callback.message,int(callback.data[13:]))
+
+    match callback.data[0:6]:
+        case 'otvet_':
+            print(callback.data)
+            if callback.data[6] == callback.data[7]:
+                defaultmessages.anwsers.append(1)
+                defaultmessages.TestingMessages(bot,callback.message,int(callback.data[9:]))
+            else:
+                defaultmessages.anwsers.append(0)
+                defaultmessages.TestingMessages(bot, callback.message, int(callback.data[9:]))
 
 @bot.message_handler(content_types=['location'])
 def FindDostoprim(message:Message):

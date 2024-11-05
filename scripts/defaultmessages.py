@@ -1,6 +1,7 @@
 import telebot
 from telebot import TeleBot
 from telebot import types
+from telebot.apihelper import delete_message
 from telebot.types import Message, InputFile
 
 import GeoCanculateDistance
@@ -8,9 +9,21 @@ import keyboards
 
 
 def SendMainMenu(bot:TeleBot,chatID:int):
+    newmessage = bot.send_message(text='.',
+                                  chat_id=chatID,
+                                  reply_markup=types.ReplyKeyboardRemove())
+    bot.delete_message(chat_id=chatID,
+                       message_id=newmessage.message_id)
     bot.send_message(chat_id=chatID,
                      text='📋| Главное меню:',
                      reply_markup=keyboards.mainMenuKeyboard)
+
+def SendMainMenuRemoveKeyboard(bot:TeleBot,message:Message):
+    bot.delete_message(chat_id=message.chat.id,
+                   message_id=message.message_id)
+    SendMainMenu(bot,message.chat.id)
+
+
 
 def EditMainMenu(bot:TeleBot,message:Message):
     if message.photo:
@@ -328,7 +341,73 @@ def EditGeneralInformation(bot:TeleBot,message:Message):
                           reply_markup=keyboards.ToMainMenuKeyboard())
 
 def EditTests(bot:TeleBot,message:Message):
-    bot.edit_message_text(text='Тут будут тесты',
+    bot.edit_message_text(text='Тест на знание городов достопримечательностей',
                           chat_id=message.chat.id,
                           message_id=message.message_id,
-                          reply_markup=keyboards.ToMainMenuKeyboard())
+                          reply_markup=keyboards.StartTestKeybord())
+
+anwsers = []
+
+def TestingMessages(bot:telebot.TeleBot,message:Message,index:int):
+    nextIndex = index + 1
+    print(anwsers)
+
+    corrects = ['a','a','b','c','d','a','b','c','d','d']
+
+    match index:
+        case 1:
+            anwsers.clear()
+            bot.edit_message_text(text='Вопрос 1',
+                                  chat_id=message.chat.id,
+                                  message_id=message.message_id,
+                                  reply_markup=keyboards.TestKeybord(corrects[0],index))
+        case 2:
+            bot.edit_message_text(text='Вопрос 2',
+                                  chat_id=message.chat.id,
+                                  message_id=message.message_id,
+                                  reply_markup=keyboards.TestKeybord(corrects[1],index))
+        case 3:
+            bot.edit_message_text(text='Вопрос 3',
+                                  chat_id=message.chat.id,
+                                  message_id=message.message_id,
+                                  reply_markup=keyboards.TestKeybord(corrects[2],index))
+        case 4:
+            bot.edit_message_text(text='Вопрос 4',
+                                  chat_id=message.chat.id,
+                                  message_id=message.message_id,
+                                  reply_markup=keyboards.TestKeybord(corrects[3],index))
+        case 5:
+            bot.edit_message_text(text='Вопрос 5',
+                                  chat_id=message.chat.id,
+                                  message_id=message.message_id,
+                                  reply_markup=keyboards.TestKeybord(corrects[4],index))
+        case 6:
+            bot.edit_message_text(text='Вопрос 6',
+                                  chat_id=message.chat.id,
+                                  message_id=message.message_id,
+                                  reply_markup=keyboards.TestKeybord(corrects[5],index))
+        case 7:
+            bot.edit_message_text(text='Вопрос 7',
+                                  chat_id=message.chat.id,
+                                  message_id=message.message_id,
+                                  reply_markup=keyboards.TestKeybord(corrects[6],index))
+        case 8:
+            bot.edit_message_text(text='Вопрос 8',
+                                  chat_id=message.chat.id,
+                                  message_id=message.message_id,
+                                  reply_markup=keyboards.TestKeybord(corrects[7],index))
+        case 9:
+            bot.edit_message_text(text='Вопрос 9',
+                                  chat_id=message.chat.id,
+                                  message_id=message.message_id,
+                                  reply_markup=keyboards.TestKeybord(corrects[8],index))
+        case 10:
+            bot.edit_message_text(text='Вопрос 10',
+                                  chat_id=message.chat.id,
+                                  message_id=message.message_id,
+                                  reply_markup=keyboards.TestKeybord(corrects[9],index))
+        case _:
+            bot.edit_message_text(text="Тест закончен",
+                                  chat_id=message.chat.id,
+                                  message_id=message.message_id,
+                                  reply_markup=keyboards.ToMainMenuKeyboard())

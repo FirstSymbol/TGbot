@@ -1,3 +1,5 @@
+from gc import callbacks
+
 from telebot import types
 from telebot.types import InlineKeyboardButton
 from telebot.types import InlineKeyboardMarkup
@@ -14,7 +16,9 @@ def ToMainMenuKeyboard():
 def GetGeoKeyboard():
     markup = ReplyKeyboardMarkup(resize_keyboard=True,row_width=2)
     but1 = KeyboardButton('Поиск', request_location=True)
+    but2 = KeyboardButton('В главное меню')
     markup.add(but1)
+    markup.add(but2)
     return markup
 
 def DostoprimPageKeybord(page:int):
@@ -89,6 +93,27 @@ def DostoprimObjKeybord(obj:int):
                     InlineKeyboardButton('В главное меню', callback_data='to_mainmenu'))
     
     return markup
+
+def StartTestKeybord():
+    markup = types.InlineKeyboardMarkup()
+    but1 = types.InlineKeyboardButton(text='Начать тест',
+                                      callback_data='start_test')
+    but2 = InlineKeyboardButton(text='В главное меню',
+                                callback_data='to_mainmenu')
+    markup.add(but1)
+    markup.add(but2)
+
+    return markup
+
+def TestKeybord(correct:chr,num:int):
+    markup = InlineKeyboardMarkup()
+    but1 = InlineKeyboardButton('а',callback_data='otvet_a'+correct+str(num)+str(num+1))
+    but2 = InlineKeyboardButton('b',callback_data='otvet_b'+correct+str(num)+str(num+1))
+    but3 = InlineKeyboardButton('c',callback_data='otvet_c'+correct+str(num)+str(num+1))
+    but4 = InlineKeyboardButton('d',callback_data='otvet_d'+correct+str(num)+str(num+1))
+    markup.row(but1,but2,but3,but4)
+    return markup
+
 
 mainMenuKeyboard = types.InlineKeyboardMarkup()
 mainMenuKeyboard.add(types.InlineKeyboardButton('🏛 Достопримечательности',callback_data='main_button1'))

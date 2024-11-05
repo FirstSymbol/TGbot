@@ -35,3 +35,7 @@ def dostoprim_obj_click(bot:telebot.TeleBot,message:Message,obj_id:int):
     
 def toMainMenu_click(bot:telebot.TeleBot,message:Message):
     defaultmessages.EditMainMenu(bot,message)
+def toMainMenu_geo_click(bot:telebot.TeleBot,message:Message):
+    defaultmessages.SendMainMenuRemoveKeyboard(bot,message)
+def start_test_click(bot:telebot.TeleBot,message:Message):
+    defaultmessages.TestingMessages(bot,message,1)
