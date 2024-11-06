@@ -6,8 +6,12 @@ import keyboards
 
 
 class Fakt:
-    text:str = 'Default text'
-    id:int = 0
+
+
+    def __init__(self):
+        self.text:str = 'Default text'
+        self.id:int = 0
+
     def LoadFakt(self, bot:TeleBot,message:Message):
         if message.photo:
             chatID:int = message.chat.id

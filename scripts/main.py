@@ -1,9 +1,7 @@
-from random import random, randint
-
+from random import randint
 import telebot
 from telebot.types import CallbackQuery
 from telebot.types import Message
-
 import callbackHandlers
 import defaultmessages
 import keyboards
@@ -12,30 +10,182 @@ from Test_module import Test
 from Test_module import TestStartPage
 
 bot = telebot.TeleBot('7918252571:AAHi5YwxTGIh73y3d-o0DI5Y5vh0amfiqpU')
-tests:list[Test] = list()
-fakts:list[Fakt] = list()
 
-for i in range(10):
+def init_tests():
+    tests[0].questions[0].text = ('Где находится усадьба Бохвицей?\n'
+                                  'а) Пинск\n'
+                                  'б) Флерьяново\n'
+                                  'в) Кобрин\n'
+                                  'г) Барановичи\n'
+                                  )
+    tests[0].questions[0].correctAnswer = 2
+
+    tests[0].questions[1].text = ('В каком агрогородке находится костел Сердца Иисуса?\n'
+                                  'а) Столовичи\n'
+                                  'б) Телеханы\n'
+                                  'в) Жабинка\n'
+                                  'г) Беловежа')
+    tests[0].questions[1].correctAnswer = 1
+
+    tests[0].questions[2].text = ('Где расположен Сапегский дворец?\n'
+                                  'а) Ружаны\n'
+                                  'б) Барановичи\n'
+                                  'в) Каменец\n'
+                                  'г) Пружаны\n')
+    tests[0].questions[2].correctAnswer = 1
+
+    tests[0].questions[3].text = ('В каком месте находится Музей космонавтики?\n'
+                                  'а) деревня Томашовка\n'
+                                  'б) Брест\n'
+                                  'в) Мотоль\n'
+                                  'г) Пинск')
+    tests[0].questions[3].correctAnswer = 2
+
+    tests[0].questions[4].text = ('В каком месте находится Брестская крепость?\n'
+                                  'а) Каменец\n'
+                                  'б) Пинск\n'
+                                  'в) Барановичи\n'
+                                  'г) Брест')
+    tests[0].questions[4].correctAnswer = 4
+
+    tests[0].questions[5].text = ('Где находятся Холмские ворота?\n'
+                                  'а) Пинск\n'
+                                  'б) Беловежа\n'
+                                  'в) Брест\n'
+                                  'г) Пружаны')
+    tests[0].questions[5].correctAnswer = 3
+
+    tests[0].questions[6].text = ('В каком населенном пункте можно увидеть Пружанский дворец?\n'
+                                  'а) Брест\n'
+                                  'б) Пинск\n'
+                                  'в) Пружаны\n'
+                                  'г) Ганцевичи')
+    tests[0].questions[6].correctAnswer = 3
+
+    tests[0].questions[7].text = ('Где расположен Музей-усадьба им. Т. Костюшко?\n'
+                                  'а) Беловежа\n'
+                                  'б) Коссово\n'
+                                  'в) Мотоль\n'
+                                  'г) Ляховичи')
+    tests[0].questions[7].correctAnswer = 2
+
+    tests[0].questions[8].text = ('Где находится музей "Каменецкая башня"?\n'
+                                  'а) Каменец\n'
+                                  'б) Брест\n'
+                                  'в) Пружаны\n'
+                                  'г) Барановичи')
+    tests[0].questions[8].correctAnswer = 1
+
+    tests[0].questions[9].text = ('Где расположен Музей Белорусского Полесья?\n'
+                                  'а) Каменец\n'
+                                  'б) Пинск\n'
+                                  'в) Кобрин\n'
+                                  'г) Барановичи')
+    tests[0].questions[9].correctAnswer = 2
+
+    # --------------------------------------------------
+
+
+
+    tests[1].questions[0].text = ('Когда отмечается День Конституции Республики Беларусь?\n'
+                                  'а) 3 июля\n'
+                                  'б) 15 марта\n'
+                                  'в) 9 мая\n'
+                                  'г) 1 сентября\n'
+                                  )
+    tests[1].questions[0].correctAnswer = 2
+
+    tests[1].questions[1].text = ('В какой день празднуют День защитников Отечества и Вооруженных Сил Республики Беларусь?\n'
+                                  'а) 1 января\n'
+                                  'б) 15 февраля\n'
+                                  'в) 23 февраля\n'
+                                  'г) 9 мая')
+    tests[1].questions[1].correctAnswer = 3
+
+    tests[1].questions[2].text = ('В какой день отмечают День памяти воинов-интернационалистов?\n'
+                                  'а) 15 февраля\n'
+                                  'б) 2 апреля\n'
+                                  'в) 26 апреля\n'
+                                  'г) 7 ноября\n')
+    tests[1].questions[2].correctAnswer = 1
+
+    tests[1].questions[3].text = ('Какого числа празднуется День Победы в Беларуси?\n'
+                                  'а) 3 июля\n'
+                                  'б) 9 мая\n'
+                                  'в) 22 июня\n'
+                                  'г) 7 ноября')
+    tests[1].questions[3].correctAnswer = 2
+
+    tests[1].questions[4].text = ('В какой день празднуют День Государственного герба и флага Республики Беларусь?\n'
+                                  'а) Первое воскресенье октября\n'
+                                  'б) Второе воскресенье мая\n'
+                                  'в) Последнее воскресенье июня\n'
+                                  'г) Третье воскресенье сентября')
+    tests[1].questions[4].correctAnswer = 2
+
+    tests[1].questions[5].text = ('В какой день отмечается День независимости Республики Беларусь (День Республики)?\n'
+                                  'а) 3 июля\n'
+                                  'б) 26 апреля\n'
+                                  'в) 9 мая\n'
+                                  'г) 7 ноября')
+    tests[1].questions[5].correctAnswer = 1
+
+    tests[1].questions[6].text = ('В какой день отмечают День матери в Беларуси?\n'
+                                  'а) 15 октября\n'
+                                  'б) 8 марта\n'
+                                  'в) 14 октября\n'
+                                  'г) 1 октября')
+    tests[1].questions[6].correctAnswer = 3
+
+    tests[1].questions[7].text = ('Когда в Беларуси празднуют День Октябрьской революции?\n'
+                                  'а) 1 мая\n'
+                                  'б) 7 ноября\n'
+                                  'в) 1 января\n'
+                                  'г) 9 мая')
+    tests[1].questions[7].correctAnswer = 2
+
+    tests[1].questions[8].text = ('Какого числа отмечают День белорусского кино?\n'
+                                  'а) 15 сентября\n'
+                                  'б) 17 декабря\n'
+                                  'в) 25 декабря\n'
+                                  'г) 10 декабря')
+    tests[1].questions[8].correctAnswer = 2
+
+    tests[1].questions[9].text = ('Когда празднуется День знаний в Беларуси?\n'
+                                  'а) 1 сентября\n'
+                                  'б) 1 июня\n'
+                                  'в) 5 апреля\n'
+                                  'г) 18 октября')
+    tests[1].questions[9].correctAnswer = 1
+
+fakts:list[Fakt] = list()
+tests:list[Test] = list()
+
+test0 = Test(testID=0,
+                  questionCount=10,
+                  startPage=TestStartPage('Этот тест на знание городов достопримечательностей.'))
+tests.append(test0)
+test1 = Test(testID=1,
+                  questionCount=10,
+                  startPage=TestStartPage('Этот тест на знание памятных дат и праздников РБ.'))
+tests.append(test1)
+print(tests[0].id)
+print(tests[1].id)
+print(len(tests[0].questions))
+print(len(tests[1].questions))
+init_tests()
+
+
+for i in range(15):
     fakts.append(Fakt())
     fakts[i].id = i
     fakts[i].text = f'Факт о РБ {i+1}'
 
-tests.append(Test(testID=0,
-                  questionCount=10,
-                  startPage=TestStartPage('Это начальная страница теста 1'))
-             )
-tests[0].questions[0].text = 'Вопрос1'
-tests[0].questions[0].correctAnswer = 2
-tests[0].questions[1].text = 'Вопрос2'
-tests[0].questions[1].correctAnswer = 3
-tests[0].questions[2].text = 'Вопрос3'
-tests[0].questions[3].text = 'Вопрос4'
-tests[0].questions[4].text = 'Вопрос5'
-tests[0].questions[5].text = 'Вопрос6'
-tests[0].questions[6].text = 'Вопрос7'
-tests[0].questions[7].text = 'Вопрос8'
-tests[0].questions[8].text = 'Вопрос9'
-tests[0].questions[9].text = 'Вопрос10'
+fakts[0].text = ('Историческая столица книги\n\n'+
+                 'Белорусский город Минск был провозглашён Всемирной столицей книги ЮНЕСКО в 2017 году за вклад в продвижение чтения и литературы.')
+fakts[1].text = ('Древний Полоцк\n\n'
+                 'Город Полоцк считается одним из старейших городов Восточной Европы – первые упоминания о нём датируются 862 годом.')
+fakts[2].text = ('123123')
 
 
 @bot.message_handler(commands=['start'])
@@ -76,6 +226,12 @@ def mainHandler(callback:CallbackQuery):
             callbackHandlers.zapovedniki_click(bot,callback.message)
         case 'load_prazdniki':
             callbackHandlers.prazdniki_click(bot,callback.message)
+        case 'load_prazdnik_globals':
+            callbackHandlers.prazdnik_globals_click(bot,callback.message)
+        case 'load_prazdnik_days':
+            callbackHandlers.prazdnik_days_click(bot,callback.message)
+        case 'load_prazdnik_pamyat':
+            callbackHandlers.prazdnik_pamyat_click(bot,callback.message)
             
     # Итерируемые коллбеки
     print(callback.data)
@@ -122,5 +278,7 @@ def mainHandler(callback:CallbackQuery):
 @bot.message_handler(content_types=['location'])
 def FindDostoprim(message:Message):
     defaultmessages.GeoMessage(bot,message)
+
+
 
 bot.polling(non_stop=True)

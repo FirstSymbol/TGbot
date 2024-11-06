@@ -16,17 +16,19 @@ class TestStartPage:
         self.text = text
 
 class Test:
-    name = str('Default Test')
-    startPage:TestStartPage
-    answers: list[int] = list()
 
-    id:int
-    questions:list[TestQuestion] = []
+
 
     def __init__(self,testID:int,questionCount:int,startPage:TestStartPage):
         self.id = testID
+        self.questions: list[TestQuestion] = []
+        self.name = str('Default Test')
+        self.answers: list[int] = list()
+
         for i in range(questionCount):
             self.questions.append(TestQuestion(i))
+            print(len(self.questions))
+        print('end')
         self.startPosition = 0
         self.startPage = startPage
         self.CreateStartPageKeyboard()

@@ -352,15 +352,30 @@ def EditTestsMenu(bot:TeleBot,message:Message):
                           reply_markup=keyboards.GetTestsKeybord())
 
 def FinishTest (bot:telebot.TeleBot,message:Message,values:list[str],tests:list[Test_module.Test]):
-        bot.edit_message_text(text=f'Кол-во верных ответов = {tests[int(values[0])].GetAnswerInfo()}',
-                              chat_id=message.chat.id,
-                              message_id=message.message_id,
-                              reply_markup=keyboards.ToMainMenuKeyboard())
+    text:str = ''
+    if 4 > tests[int(values[0])].GetAnswerInfo() >= 0:
+        text = 'Очень плохо'
+    elif 7 > tests[int(values[0])].GetAnswerInfo() > 3:
+        text = 'Средний результат'
+    elif 10 > tests[int(values[0])].GetAnswerInfo() > 6:
+        text = 'Хороший результат'
+    elif tests[int(values[0])].GetAnswerInfo() >= 10:
+        text = 'Отличный результат'
+
+    bot.edit_message_text(text=f'Результат: {text}\nКол-во верных ответов = {tests[int(values[0])].GetAnswerInfo()}/{len(tests[int(values[0])].questions)}',
+                          chat_id=message.chat.id,
+                          message_id=message.message_id,
+                          reply_markup=keyboards.ToMainMenuKeyboard())
 # ----------------------------------
 
 def Zapovedniki(bot:telebot.TeleBot,message:Message):
     if message.photo:
-        pass
+        chatID:int = message.chat.id
+        bot.delete_message(chat_id=chatID,
+                           message_id=message.message_id)
+        bot.send_message(text='Заповедники и национальные парки Республики Беларусь',
+                         chat_id=message.chat.id,
+                         reply_markup=keyboards.GetZapovednikiKeyboard())
     else:
         bot.edit_message_text(text='Заповедники и национальные парки Республики Беларусь',
                               chat_id=message.chat.id,
@@ -369,41 +384,86 @@ def Zapovedniki(bot:telebot.TeleBot,message:Message):
 
 def LoadZapovednik(bot:telebot.TeleBot,message:Message,num:int):
     global text
+    global media
     match num:
         case 1:
             text = ('Березинский биосферный заповедник — заповедник, находящийся в северной части Белоруссии на расстоянии 120 километров от Минска в направлении Санкт-Петербурга.\n\nРасположен на границе Витебской и Минской областей. Центром заповедника является деревня Домжерицы Лепельского района.\n\n'+
                    'Заповедник служит для охраны и разведения редких видов животных и птиц, которые занесены в национальную Красную книгу. Входит во всемирную сеть биосферных заповедников ЮНЕСКО.')
+            media = types.InputMediaPhoto(InputFile('../images/zapovedniki/obj1.jpg'), caption=text)
         case 2:
             text = ('Полесский государственный радиационно-экологический заповедник (бел. Палескі дзяржаўны радыяцыйна-экалагічны запаведнік) (акроним: ПГРЭЗ) — крупнейший заповедник Белоруссии и единственный в мире радиационно-экологический заповедник.\n\nЗаповедник занимает 215 тысяч га на территории трёх наиболее пострадавших от аварии на Чернобыльской АЭС районов Гомельской области — Брагинского, Наровлянского и Хойникского.\n\n')
+            media = types.InputMediaPhoto(InputFile('../images/zapovedniki/obj2.jpg'), caption=text)
         case 3:
             text = 'Национальный парк «Беловежская пуща» (белор. Нацыянальны парк «Белавежская пушча») — белорусское государственное природоохранное учреждение, в ведении которого находятся территории реликтового лесного массива Беловежская пуща.\n\nОбщая площадь охраняемых земель парка составляет 150 083 га.'
+            media = types.InputMediaPhoto(InputFile('../images/zapovedniki/obj3.jpg'), caption=text)
         case 4:
             text = ('Нарочанский национальный парк — национальный парк в Белоруссии, охватывающий северо-западную часть Минской области, западную часть Витебской и северную часть Гродненской области и занимающий площадь в 87,3 тысячи га.\n\n'+
                     '17 % площади парка занимают озёра, всего их насчитывается около 40.\n\nОзёра окружены нетронутыми лесами с редкими видами животных.\n\nВсего на территории Нарочанского национального парка расположено три группы озёр: Болдукская, Нарочанская и Мядельская.\n\nЗаглавное место в Нарочанской группе озёр занимает озеро Нарочь.\n\nЭто самое крупное естественное водохранилище в Белоруссии (площадь — 80 км²). Средняя глубина озера составляет 9 м, длина — 13 км, ширина 10 км. В озеро впадают два десятка ручьёв и небольшая речка, а вытекает река Нарочь. Вода в озере очень чистая, что позволяет разводить здесь сиговых рыб.')
+            media = types.InputMediaPhoto(InputFile('../images/zapovedniki/obj4.jpg'), caption=text)
         case 5:
             text = ('Национальный парк «Брасла́вские озёра» — национальный парк на северо-западе Белоруссии.\n\n'+
                     'Национальный парк служит защитой уникальных природных комплексов от хозяйственной деятельности человека, сохранению их для будущих поколений. Он был создан в августе 1995 года.\n\nЯдром стала Браславская группа озёр. В состав парка вошла южная часть Браславского района со значительными болотными и лесными массивами.\n\nОбщая площадь национального парка составляет 71500 га. С севера на юг он тянется на 56 км, при ширине от 7 до 29 км. Около 17 % его территории занимают озёра, леса занимают 46 % поверхности.')
+            media = types.InputMediaPhoto(InputFile('../images/zapovedniki/obj5.jpg'), caption=text)
         case 6:
             text = ('Припятский национальный парк[1] (бел. Прыпяцкi нацыянальны парк) — национальный парк на юге Белоруссии, подчинён Управлению делами Президента Республики Беларусь.\n'+
                     'Припятский национальный парк расположен на западе Гомельской области в 350 км восточнее Бреста и в 250 км южнее Минска, к югу от трассы Брест — Брянск. В 1969 году сперва был создан Припятский государственный ландшафтно-гидрологический заповедник, в 1996 году преобразованный в национальный парк. Площадь заповедника, а позже национального парка, увеличивалась, сегодня она составляет 188 485 га. Южная часть его представлена особо охраняемой природной территорией площадью 85 841 га. Администрация национального парка находится в агрогородке Лясковичи.')
-    if message.photo:
-        bot.send_message(text=text,
-                         chat_id=message.chat.id,
-                         reply_markup=keyboards.GetZapovednikKeboard())
-    else:
-        bot.edit_message_text(text=text,
-                              chat_id=message.chat.id,
-                              message_id=message.message_id,
-                              reply_markup=keyboards.GetZapovednikKeboard())
+            media = types.InputMediaPhoto(InputFile('../images/zapovedniki/obj6.jpg'), caption=text)
+
+    bot.edit_message_media(media=media,
+                            chat_id=message.chat.id,
+                            message_id=message.message_id,
+                            reply_markup=keyboards.GetZapovednikKeboard())
 
 # ----------------------------------
 def LoadPrazdniki(bot:telebot.TeleBot,message:Message):
-    bot.edit_message_text(text='1. День Конституции – 15 марта;\n'+
-                               '2. День единения народов Беларуси и России – 2 апреля;\n'+
+    bot.edit_message_text(text='Выберите интересующую категорию',
+                          chat_id=message.chat.id,
+                          message_id=message.message_id,
+                          reply_markup=keyboards.GetPrazdnikiKeyboard())
+
+def LoadPradnikGlobal(bot:TeleBot,message:Message):
+    bot.edit_message_text(text='1. День Конституции – 15 марта;\n' +
+                               '2. День единения народов Беларуси и России – 2 апреля;\n' +
                                '3. День Победы – 9 мая;\n' +
                                '4. День Государственного герба Республики Беларусь и Государственного флага\n' +
                                '5. Республики Беларусь – второе воскресенье мая;\n' +
                                '6. День Независимости Республики Беларусь (День Республики) – 3 июля',
                           chat_id=message.chat.id,
                           message_id=message.message_id,
-                          reply_markup=keyboards.ToMainMenuKeyboard())
+                          reply_markup=keyboards.GetPrazdnikPageKeyboard())
+def LoadPrazdnikDays(bot:TeleBot,message:Message):
+    bot.edit_message_text(text=('1. Новый год – 1 января;\n'
+                                '2. День защитников Отечества и Вооруженных Сил Республики Беларусь – 23 февраля;\n'
+                                '3. День женщин – 8 марта;\n'
+                                '4. Праздник труда – 1 мая;\n'
+                                '5. День Октябрьской революции – 7 ноября;\n'
+                                '6. Рождество Христово (православное Рождество) – 7 января;\n'
+                                '7. Пасха – по календарю православной и католической конфессий;\n'
+                                '8. Радуница – по календарю православной конфессии;\n'
+                                '9. День памяти – 2 ноября;\n'
+                                '10. Рождество Христово (католическое Рождество) – 25 декабря;\n'
+                                '11. День печати – 5 мая;\n'
+                                '12. День библиотек – 15 сентября;\n'
+                                '13. День учителя – первое воскресенье октября;\n'
+                                '14. День семьи – 15 мая;\n'
+                                '15. День охраны окружающей среды – 5 июня;\n'
+                                '16. День молодежи – последнее воскресенье июня;\n'
+                                '17. День знаний – 1 сентября;\n'
+                                '18. День белорусской письменности – первое воскресенье сентября;\n'
+                                '19. День мира – третий вторник сентября;\n'
+                                '20. День пожилых людей – 1 октября;\n'
+                                '21. День матери – 14 октября;\n'
+                                '22. День инвалидов Республики Беларусь – 3 декабря;\n'
+                                '23. День прав человека – 10 декабря;\n'
+                                '24. День белорусского кино – 17 декабря.\n'),
+                          chat_id=message.chat.id,
+                          message_id=message.message_id,
+                          reply_markup=keyboards.GetPrazdnikPageKeyboard())
+
+def LoadPrazdnikPamyat(bot:TeleBot,message:Message):
+    bot.edit_message_text(text=('1. День памяти воинов-интернационалистов – 15 февраля;\n'
+                                '2. День чернобыльской трагедии – 26 апреля;\n'
+                                '3. День всенародной памяти жертв Великой Отечественной войны – 22 июня.\n'),
+                          chat_id=message.chat.id,
+                          message_id=message.message_id,
+                          reply_markup=keyboards.GetPrazdnikPageKeyboard())

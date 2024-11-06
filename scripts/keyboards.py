@@ -103,10 +103,10 @@ def GetFaktsKeybord(fakt:int):
 
 def GetTestsKeybord():
     markup = InlineKeyboardMarkup()
-    but1 = InlineKeyboardButton('Тест1',callback_data='load_test_0')
-    but2 = InlineKeyboardButton('Тест2',callback_data='load_test_1')
+    but1 = InlineKeyboardButton('Города достопримечательностей',callback_data='load_test_0')
+    but2 = InlineKeyboardButton('Памятные даты и праздники',callback_data='load_test_1')
     but3 = InlineKeyboardButton('Тест3',callback_data='load_test_2')
-    but4 = InlineKeyboardButton('Тест4',callback_data='load_test_3')
+    but4 = InlineKeyboardButton('В главное меню', callback_data='to_mainmenu')
     markup.add(but1)
     markup.add(but2)
     markup.add(but3)
@@ -132,6 +132,27 @@ def GetZapovednikKeboard():
     but2 = InlineKeyboardButton('К списку',callback_data='load_zapovedniki')
     markup.row(but1,but2)
     return markup
+
+def GetPrazdnikiKeyboard():
+    markup = InlineKeyboardMarkup()
+    but1 = InlineKeyboardButton('В главное меню', callback_data='to_mainmenu')
+    but2 = InlineKeyboardButton('Гос. праздники', callback_data='load_prazdnik_globals')
+    but3 = InlineKeyboardButton('Праздничные дни', callback_data='load_prazdnik_days')
+    but4 = InlineKeyboardButton('Памятные дни', callback_data='load_prazdnik_pamyat')
+    markup.add(but2)
+    markup.add(but3)
+    markup.add(but4)
+    markup.add(but1)
+    return markup
+
+def GetPrazdnikPageKeyboard():
+    markup = InlineKeyboardMarkup()
+    but1 = InlineKeyboardButton('В главное меню', callback_data='to_mainmenu')
+    but2 = InlineKeyboardButton('К списку', callback_data='load_prazdniki')
+    markup.row(but1,but2)
+    return markup
+
+
 
 mainMenuKeyboard = types.InlineKeyboardMarkup()
 mainMenuKeyboard.add(types.InlineKeyboardButton('🏛 Достопримечательности',callback_data='main_button1'))

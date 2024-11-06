@@ -50,6 +50,7 @@ def toMainMenu_geo_click(bot:telebot.TeleBot,message:Message):
 
 # ----------------------------------
 def answer_test_click(bot:telebot.TeleBot,message:Message,values:list[str],tests:list[Test_module.Test]):
+
     if (values[2] == values[3]):
         print('Верный ответ')
         tests[int(values[0])].answers.append(1)
@@ -60,6 +61,7 @@ def answer_test_click(bot:telebot.TeleBot,message:Message,values:list[str],tests
         tests[int(values[0])].LoadQuestion(bot,message, int(values[1]) + 1)
     else:
         defaultmessages.FinishTest(bot,message, values, tests)
+
 # ----------------------------------
 def zapovedniki_click(bot:telebot.TeleBot,message:Message):
     defaultmessages.Zapovedniki(bot,message)
@@ -69,3 +71,10 @@ def zapovednik_click(bot:telebot.TeleBot,message:Message,num:id):
 # ----------------------------------
 def prazdniki_click(bot:telebot.TeleBot,message:Message):
     defaultmessages.LoadPrazdniki(bot, message)
+
+def prazdnik_globals_click(bot:telebot.TeleBot,message:Message):
+    defaultmessages.LoadPradnikGlobal(bot,message)
+def prazdnik_days_click(bot:telebot.TeleBot,message:Message):
+    defaultmessages.LoadPrazdnikDays(bot, message)
+def prazdnik_pamyat_click(bot:telebot.TeleBot,message:Message):
+    defaultmessages.LoadPrazdnikPamyat(bot, message)
