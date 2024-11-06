@@ -1,3 +1,5 @@
+from random import random, randint
+
 import telebot
 from telebot.types import CallbackQuery
 from telebot.types import Message
@@ -5,11 +7,19 @@ from telebot.types import Message
 import callbackHandlers
 import defaultmessages
 import keyboards
+from Fakt_module import Fakt
 from Test_module import Test
 from Test_module import TestStartPage
 
 bot = telebot.TeleBot('7918252571:AAHi5YwxTGIh73y3d-o0DI5Y5vh0amfiqpU')
 tests:list[Test] = list()
+fakts:list[Fakt] = list()
+
+for i in range(10):
+    fakts.append(Fakt())
+    fakts[i].id = i
+    fakts[i].text = f'Факт о РБ {i+1}'
+
 tests.append(Test(testID=0,
                   questionCount=10,
                   startPage=TestStartPage('Это начальная страница теста 1'))
@@ -62,8 +72,13 @@ def mainHandler(callback:CallbackQuery):
             callbackHandlers.dostoprim_page2_click(bot,callback.message)
         case 'dostoprim_page3':
             callbackHandlers.dostoprim_page3_click(bot,callback.message)
+        case 'load_zapovedniki':
+            callbackHandlers.zapovedniki_click(bot,callback.message)
+        case 'load_prazdniki':
+            callbackHandlers.prazdniki_click(bot,callback.message)
             
     # Итерируемые коллбеки
+    print(callback.data)
     match callback.data[0:13]:
         case 'dostoprim_obj':
             callbackHandlers.dostoprim_obj_click(bot,callback.message,int(callback.data[13:]))
@@ -75,7 +90,17 @@ def mainHandler(callback:CallbackQuery):
         case 'load_test':
             values = callback.data[10:].split('_')
             tests[int(values[0])].LoadTest(bot,callback.message)
-
+        case 'load_fakt':
+            values = callback.data[10:].split('_')
+            if values[0] == 'random':
+                num = randint(0,len(fakts)-1)
+                try:
+                    fakts[num].LoadFakt(bot,callback.message)
+                except:
+                    num = randint(0,len(fakts)-1)
+                    fakts[num].LoadFakt(bot, callback.message)
+            else:
+                fakts[int(values[0])].LoadFakt(bot,callback.message)
     match callback.data[0:10]:
         case 'start_test':
             values = callback.data[11:].split('_')
@@ -89,6 +114,9 @@ def mainHandler(callback:CallbackQuery):
                                                message=callback.message,
                                                values=values,
                                                tests=tests)
+        case 'load_zapov_':
+            values = callback.data[11:].split('_')
+            callbackHandlers.zapovednik_click(bot, callback.message, int(values[0]))
 
 
 @bot.message_handler(content_types=['location'])

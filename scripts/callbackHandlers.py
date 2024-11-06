@@ -18,6 +18,15 @@ def mainMenu_button3_click(bot:telebot.TeleBot,message:Message):
 def mainMenu_button4_click(bot:telebot.TeleBot,message:Message):
     defaultmessages.EditGeneralInformation(bot,message)
 
+def mainMenu_button5_click(bot:telebot.TeleBot,message:Message):
+    pass
+
+def mainMenu_button6_click(bot:telebot.TeleBot,message:Message):
+    pass
+
+def mainMenu_button7_click(bot:telebot.TeleBot,message:Message):
+    defaultmessages.EditGeneralInformation(bot,message)
+
 # ----------------------------------
 
 def dostoprim_page1_click(bot:telebot.TeleBot,message:Message):
@@ -38,8 +47,6 @@ def toMainMenu_click(bot:telebot.TeleBot,message:Message):
     defaultmessages.EditMainMenu(bot,message)
 def toMainMenu_geo_click(bot:telebot.TeleBot,message:Message):
     defaultmessages.SendMainMenuRemoveKeyboard(bot,message)
-def start_test_click(bot:telebot.TeleBot,message:Message):
-    defaultmessages.TestingMessages(bot,message,1)
 
 # ----------------------------------
 def answer_test_click(bot:telebot.TeleBot,message:Message,values:list[str],tests:list[Test_module.Test]):
@@ -53,3 +60,12 @@ def answer_test_click(bot:telebot.TeleBot,message:Message,values:list[str],tests
         tests[int(values[0])].LoadQuestion(bot,message, int(values[1]) + 1)
     else:
         defaultmessages.FinishTest(bot,message, values, tests)
+# ----------------------------------
+def zapovedniki_click(bot:telebot.TeleBot,message:Message):
+    defaultmessages.Zapovedniki(bot,message)
+
+def zapovednik_click(bot:telebot.TeleBot,message:Message,num:id):
+    defaultmessages.LoadZapovednik(bot,message,num)
+# ----------------------------------
+def prazdniki_click(bot:telebot.TeleBot,message:Message):
+    defaultmessages.LoadPrazdniki(bot, message)

@@ -312,6 +312,8 @@ def EditDostoprimObj(bot:TeleBot,message:Message,obj_id:int):
                            reply_markup=keyboards.DostoprimObjKeybord(obj_id),
                            media=photo)
 
+# ----------------------------------
+
 def GetGeo(bot:TeleBot, message:Message):
     chatID = message.chat.id
 
@@ -333,11 +335,15 @@ def GeoMessage(bot:TeleBot, message:Message):
                                                                    10),
                      reply_markup=keyboards.ToMainMenuKeyboard())
 
+# ----------------------------------
+
 def EditGeneralInformation(bot:TeleBot,message:Message):
     bot.edit_message_text(text='Данный бот был создан в рамках какого-то там конкурса учащимся колледжа БГКЛ им. В.Е.Чернышева Жуковцом А.В.',
                           chat_id=message.chat.id,
                           message_id=message.message_id,
                           reply_markup=keyboards.ToMainMenuKeyboard())
+
+# ----------------------------------
 
 def EditTestsMenu(bot:TeleBot,message:Message):
     bot.edit_message_text(text='Тесты',
@@ -350,3 +356,45 @@ def FinishTest (bot:telebot.TeleBot,message:Message,values:list[str],tests:list[
                               chat_id=message.chat.id,
                               message_id=message.message_id,
                               reply_markup=keyboards.ToMainMenuKeyboard())
+# ----------------------------------
+
+def Zapovedniki(bot:telebot.TeleBot,message:Message):
+    if message.photo:
+        pass
+    else:
+        bot.edit_message_text(text='Заповедники и национальные парки Республики Беларусь',
+                              chat_id=message.chat.id,
+                              message_id=message.message_id,
+                              reply_markup=keyboards.GetZapovednikiKeyboard())
+
+def LoadZapovednik(bot:telebot.TeleBot,message:Message,num:int):
+    global text
+    match num:
+        case 1:
+            text = 'Информация 1'
+        case 2:
+            text = 'Информация 2'
+        case 3:
+            text = 'Информация 3'
+        case 4:
+            text = 'Информация 4'
+        case 5:
+            text = 'Информация 5'
+        case 6:
+            text = 'Информация 6'
+    if message.photo:
+        bot.send_message(text=text,
+                         chat_id=message.chat.id,
+                         reply_markup=keyboards.GetZapovednikKeboard())
+    else:
+        bot.edit_message_text(text=text,
+                              chat_id=message.chat.id,
+                              message_id=message.message_id,
+                              reply_markup=keyboards.GetZapovednikKeboard())
+
+# ----------------------------------
+def LoadPrazdniki(bot:telebot.TeleBot,message:Message):
+    bot.edit_message_text(text='Тут будет написаны праздники',
+                          chat_id=message.chat.id,
+                          message_id=message.message_id,
+                          reply_markup=keyboards.ToMainMenuKeyboard())

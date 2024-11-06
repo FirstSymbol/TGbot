@@ -92,6 +92,14 @@ def DostoprimObjKeybord(obj:int):
     
     return markup
 
+def GetFaktsKeybord(fakt:int):
+    markup = InlineKeyboardMarkup()
+    but1 = InlineKeyboardButton('В главное меню', callback_data='to_mainmenu')
+    but2 = InlineKeyboardButton('Следующий факт', callback_data=f'load_fakt_{fakt+1}')
+    but3 = InlineKeyboardButton('Случайный факт', callback_data=f'load_fakt_random')
+    markup.row(but3,but2)
+    markup.add(but1)
+    return markup
 
 def GetTestsKeybord():
     markup = InlineKeyboardMarkup()
@@ -105,9 +113,31 @@ def GetTestsKeybord():
     markup.add(but4)
     return markup
 
+def GetZapovednikiKeyboard():
+    markup = InlineKeyboardMarkup()
+    but1 = InlineKeyboardButton('Заповедник 1',callback_data='load_zapov_1')
+    but2 = InlineKeyboardButton('Заповедник 2',callback_data='load_zapov_2')
+    but3 = InlineKeyboardButton('Заповедник 3',callback_data='load_zapov_3')
+    but4 = InlineKeyboardButton('Заповедник 4',callback_data='load_zapov_4')
+    but5 = InlineKeyboardButton('Заповедник 5',callback_data='load_zapov_5')
+    but6 = InlineKeyboardButton('Заповедник 6',callback_data='load_zapov_6')
+    markup.row(but1,but2)
+    markup.row(but3,but4)
+    markup.row(but5,but6)
+    markup.add(InlineKeyboardButton('В главное меню',callback_data='to_mainmenu'))
+    return markup
+def GetZapovednikKeboard():
+    markup = InlineKeyboardMarkup()
+    but1 = InlineKeyboardButton('В главное меню', callback_data='to_mainmenu')
+    but2 = InlineKeyboardButton('К списку',callback_data='load_zapovedniki')
+    markup.row(but1,but2)
+    return markup
 
 mainMenuKeyboard = types.InlineKeyboardMarkup()
 mainMenuKeyboard.add(types.InlineKeyboardButton('🏛 Достопримечательности',callback_data='main_button1'))
 mainMenuKeyboard.add(types.InlineKeyboardButton('🗺 Ближайшая достопримечательность',callback_data='main_button2'))
 mainMenuKeyboard.add(types.InlineKeyboardButton('📝 Тесты',callback_data='main_button3'))
+mainMenuKeyboard.add(types.InlineKeyboardButton('Факты',callback_data='load_fakt_0'))
+mainMenuKeyboard.add(types.InlineKeyboardButton('Заповедники и нац. парки',callback_data='load_zapovedniki'))
+mainMenuKeyboard.add(types.InlineKeyboardButton('Национальные праздники',callback_data='load_prazdniki'))
 mainMenuKeyboard.add(types.InlineKeyboardButton('Общая информация',callback_data='main_button4'))
