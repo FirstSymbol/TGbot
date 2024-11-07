@@ -1,3 +1,5 @@
+import sqlite3
+
 import telebot
 from telebot import TeleBot
 from telebot import types
@@ -338,7 +340,7 @@ def GeoMessage(bot:TeleBot, message:Message):
 # ----------------------------------
 
 def EditGeneralInformation(bot:TeleBot,message:Message):
-    bot.edit_message_text(text='Ссылка на какой-то портал',
+    bot.edit_message_text(text='Национальный правовой Интернет-портал Республики Беларусь - https://pravo.by/',
                           chat_id=message.chat.id,
                           message_id=message.message_id,
                           reply_markup=keyboards.ToMainMenuKeyboard())
@@ -352,20 +354,34 @@ def EditTestsMenu(bot:TeleBot,message:Message):
                           reply_markup=keyboards.GetTestsKeybord())
 
 def FinishTest (bot:telebot.TeleBot,message:Message,values:list[str],tests:list[Test_module.Test]):
+
+    db = sqlite3.connect('../database/database.db')
+    c = db.cursor()
+    c.execute(f"""SELECT marks FROM test{values[0]} WHERE user_id = {message.chat.id}""")
+    usertestdata = c.fetchone()
+    usermarks = list(usertestdata[0])
+    resylt:int = 0
+    for mark in usermarks:
+        resylt += int(mark)
+
+    c.execute(f"""UPDATE test{values[0]} SET resylt = {resylt} WHERE user_id = {message.chat.id}""")
+    db.commit()
+
     text:str = ''
-    if 4 > tests[int(values[0])].GetAnswerInfo() >= 0:
+    if 4 > resylt >= 0:
         text = 'Очень плохо'
-    elif 7 > tests[int(values[0])].GetAnswerInfo() > 3:
+    elif 7 > resylt > 3:
         text = 'Средний результат'
-    elif 10 > tests[int(values[0])].GetAnswerInfo() > 6:
+    elif 10 > resylt > 6:
         text = 'Хороший результат'
-    elif tests[int(values[0])].GetAnswerInfo() >= 10:
+    elif resylt >= 10:
         text = 'Отличный результат'
 
-    bot.edit_message_text(text=f'Результат: {text}\nКол-во верных ответов = {tests[int(values[0])].GetAnswerInfo()}/{len(tests[int(values[0])].questions)}',
+    bot.edit_message_text(text=f'Результат: {text}\nКол-во верных ответов = {resylt}/{len(tests[int(values[0])].questions)}',
                           chat_id=message.chat.id,
                           message_id=message.message_id,
                           reply_markup=keyboards.ToMainMenuKeyboard())
+    db.close()
 # ----------------------------------
 
 def Zapovedniki(bot:telebot.TeleBot,message:Message):
@@ -405,8 +421,8 @@ def LoadZapovednik(bot:telebot.TeleBot,message:Message,num:int):
                     'Национальный парк служит защитой уникальных природных комплексов от хозяйственной деятельности человека, сохранению их для будущих поколений. Он был создан в августе 1995 года.\n\nЯдром стала Браславская группа озёр. В состав парка вошла южная часть Браславского района со значительными болотными и лесными массивами.\n\nОбщая площадь национального парка составляет 71500 га. С севера на юг он тянется на 56 км, при ширине от 7 до 29 км. Около 17 % его территории занимают озёра, леса занимают 46 % поверхности.')
             media = types.InputMediaPhoto(InputFile('../images/zapovedniki/obj5.jpg'), caption=text)
         case 6:
-            text = ('Припятский национальный парк[1] (бел. Прыпяцкi нацыянальны парк) — национальный парк на юге Белоруссии, подчинён Управлению делами Президента Республики Беларусь.\n'+
-                    'Припятский национальный парк расположен на западе Гомельской области в 350 км восточнее Бреста и в 250 км южнее Минска, к югу от трассы Брест — Брянск. В 1969 году сперва был создан Припятский государственный ландшафтно-гидрологический заповедник, в 1996 году преобразованный в национальный парк. Площадь заповедника, а позже национального парка, увеличивалась, сегодня она составляет 188 485 га. Южная часть его представлена особо охраняемой природной территорией площадью 85 841 га. Администрация национального парка находится в агрогородке Лясковичи.')
+            text = ('Припятский национальный парк (бел. Прыпяцкi нацыянальны парк) — национальный парк на юге Белоруссии, подчинён Управлению делами Президента Республики Беларусь.\n\n'+
+                    'Припятский национальный парк расположен на западе Гомельской области в 350 км восточнее Бреста и в 250 км южнее Минска, к югу от трассы Брест — Брянск.\n\nВ 1969 году сперва был создан Припятский государственный ландшафтно-гидрологический заповедник, в 1996 году преобразованный в национальный парк.\n\nПлощадь заповедника, а позже национального парка, увеличивалась, сегодня она составляет 188 485 га.\n\nЮжная часть его представлена особо охраняемой природной территорией площадью 85 841 га. Администрация национального парка находится в агрогородке Лясковичи.')
             media = types.InputMediaPhoto(InputFile('../images/zapovedniki/obj6.jpg'), caption=text)
 
     bot.edit_message_media(media=media,

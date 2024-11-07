@@ -27,8 +27,6 @@ class Test:
 
         for i in range(questionCount):
             self.questions.append(TestQuestion(i))
-            print(len(self.questions))
-        print('end')
         self.startPosition = 0
         self.startPage = startPage
         self.CreateStartPageKeyboard()

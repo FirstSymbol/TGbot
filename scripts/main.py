@@ -1,4 +1,7 @@
+import sqlite3
 from random import randint
+from tkinter.constants import INSERT
+
 import telebot
 from telebot.types import CallbackQuery
 from telebot.types import Message
@@ -10,6 +13,12 @@ from Test_module import Test
 from Test_module import TestStartPage
 
 bot = telebot.TeleBot('7918252571:AAHi5YwxTGIh73y3d-o0DI5Y5vh0amfiqpU')
+
+#db = sqlite3.connect('../database/database.db')
+#c = db.cursor()
+#c.execute("""DELETE FROM users WHERE user_id = 1416150901""")
+#db.commit()
+#db.close()
 
 def init_tests():
     tests[0].questions[0].text = ('Где находится усадьба Бохвицей?\n'
@@ -169,10 +178,6 @@ test1 = Test(testID=1,
                   questionCount=10,
                   startPage=TestStartPage('Этот тест на знание памятных дат и праздников РБ.'))
 tests.append(test1)
-print(tests[0].id)
-print(tests[1].id)
-print(len(tests[0].questions))
-print(len(tests[1].questions))
 init_tests()
 
 
@@ -182,18 +187,71 @@ for i in range(15):
     fakts[i].text = f'Факт о РБ {i+1}'
 
 fakts[0].text = ('Историческая столица книги\n\n'+
-                 'Белорусский город Минск был провозглашён Всемирной столицей книги ЮНЕСКО в 2017 году за вклад в продвижение чтения и литературы.')
+                 'Белорусский город Минск был провозглашён Всемирной столицей книги ЮНЕСКО в 2017 году за вклад в продвижение чтения и литературы.\n1/15')
 fakts[1].text = ('Древний Полоцк\n\n'
-                 'Город Полоцк считается одним из старейших городов Восточной Европы – первые упоминания о нём датируются 862 годом.')
-fakts[2].text = ('123123')
+                 'Город Полоцк считается одним из старейших городов Восточной Европы – первые упоминания о нём датируются 862 годом.\n2/15')
+fakts[2].text = ('Исторический центр Европы\n\n'
+                 'Географический центр Европы по одной из методик расчета находится в Беларуси, неподалёку от деревни Полотово в Витебской области.\n3/15')
+fakts[3].text = ('Страна озёр\n\n'
+                 'В Беларуси насчитывается около 11 тысяч озёр, из которых самым крупным является Нарочь.\n4/15')
+fakts[4].text = ('Сильный дух спорта\n\n'
+                 'Беларусь прославилась в спортивном мире благодаря достижениям в таких видах, как биатлон, теннис и лёгкая атлетика. Белорусские спортсмены регулярно занимают высокие места на международных соревнованиях.\n5/15')
+fakts[5].text = ('Уникальные флора и фауна Полесья\n\n'
+                 'Полесские болота известны своей уникальной экосистемой и являются домом для редких видов птиц, растений и насекомых, привлекая исследователей и экотуристов.\n6/15')
+fakts[6].text = ('Биосферные заповедники\n\n'
+                 'На территории Беларуси находится несколько биосферных заповедников, включая Березинский биосферный заповедник, который охраняет редкие виды животных и растений.\n7/15')
+fakts[7].text = ('Традиция Купалья\n\n'
+                 'Белорусы празднуют ночь на Ивана Купалу — древний славянский праздник, на котором жгут костры, плетут венки и совершают обряды на поиски папоротника.\n8/15')
+fakts[8].text = ('Национальная библиотека — «алмаз» Минска\n\n'
+                 'Здание Национальной библиотеки Беларуси часто называют «алмазом» Минска из-за его оригинальной формы, напоминающей многогранный кристалл.\n9/15')
+fakts[9].text = ('Минск – город-герой\n\n'
+                 'Во время Второй мировой войны город Минск был практически полностью разрушен, но его восстановили, и за мужество его жителей Минску присвоили звание "Город-герой".\n10/15')
+fakts[10].text = ('Государство без гор\n\n'
+                 'Беларусь — одна из немногих стран Европы, в которой нет гор. Её самая высокая точка — гора Дзержинская (около 345 метров).\n11/15')
+fakts[11].text = ('Уникальный музей валунов в Минске\n\n'
+                 'В Минске расположен один из крупнейших в мире музеев валунов под открытым небом, где собраны камни, привезенные со всей страны для сохранения культурного наследия.\n12/15')
+fakts[12].text = ('Родина многих известных личностей\n\n'
+                 'На территории Беларуси родились такие выдающиеся личности, как художник Марк Шагал, философ Соломон Маймон, космонавт Петр Климук и многие другие.\n13/15')
+fakts[13].text = ('Фестиваль «Славянский базар»\n\n'
+                 'Ежегодно в Витебске проводится международный фестиваль искусств «Славянский базар», который объединяет музыкантов и артистов из многих стран мира.\n14/15')
+fakts[14].text = ('Дом легендарного Статута Великого княжества Литовского\n\n'
+                 'В 1588 году был принят третий Статут Великого княжества Литовского, одного из наиболее прогрессивных правовых документов своего времени. Статут был составлен на старобелорусском языке.\n15/15')
 
+
+def registerUser(message:Message):
+    db = sqlite3.connect('../database/database.db')
+    c = db.cursor()
+    c.execute("SELECT * FROM users")
+    users = c.fetchall()
+    check = False
+    for user in users:
+        if user[0] == message.chat.id:
+            print('Найдено совпадение')
+            check = True
+
+            if user[1] != message.chat.id:
+                c.execute(f"UPDATE users SET user_chat = {message.chat.id} WHERE user_id = {message.chat.id}")
+                db.commit()
+            break
+    else:
+        if check == False:
+            print('Совпадение не найдено')
+            c.execute(f"INSERT INTO users VALUES ({message.chat.id},{message.chat.id})")
+            c.execute(f"INSERT INTO test0 VALUES ({message.chat.id},'0000000000',0)")
+            c.execute(f"INSERT INTO test1 VALUES ({message.chat.id},'0000000000',0)")
+            c.execute(f"INSERT INTO test2 VALUES ({message.chat.id},'0000000000',0)")
+            db.commit()
+    db.close()
 
 @bot.message_handler(commands=['start'])
 def Start(message:Message):
+    registerUser(message)
     bot.send_message(message.chat.id,f'Привет {message.from_user.full_name}.\nВот тебе меню:',reply_markup=keyboards.mainMenuKeyboard)
+
 
 @bot.message_handler()
 def mainMenuHandler(message:Message):
+    registerUser(message)
     if(message.text == 'В главное меню'):
         defaultmessages.SendMainMenu(bot,message.chat.id)
     else:
@@ -203,7 +261,7 @@ def mainMenuHandler(message:Message):
 
 @bot.callback_query_handler(func=lambda callback:True)
 def mainHandler(callback:CallbackQuery):
-    
+    registerUser(callback.message)
     # Не итерируемые коллбэки
     match callback.data:
         case 'main_button1':
@@ -242,10 +300,12 @@ def mainHandler(callback:CallbackQuery):
     match callback.data[0:6]:
         case 'otvet_':
             pass
+
     match callback.data[0:9]:
         case 'load_test':
             values = callback.data[10:].split('_')
             tests[int(values[0])].LoadTest(bot,callback.message)
+
         case 'load_fakt':
             values = callback.data[10:].split('_')
             if values[0] == 'random':
@@ -256,12 +316,20 @@ def mainHandler(callback:CallbackQuery):
                     num = randint(0,len(fakts)-1)
                     fakts[num].LoadFakt(bot, callback.message)
             else:
-                fakts[int(values[0])].LoadFakt(bot,callback.message)
+                try:
+                    fakts[int(values[0])].LoadFakt(bot,callback.message)
+                except:
+                    pass
+
     match callback.data[0:10]:
         case 'start_test':
             values = callback.data[11:].split('_')
             tests[int(values[0])].LoadQuestion(bot,callback.message,int(values[1]))
-            tests[int(values[0])].answers.clear()
+            db = sqlite3.connect('../database/database.db')
+            c = db.cursor()
+            c.execute(f"""UPDATE test{values[0]} SET marks = '0000000000' WHERE user_id = {callback.message.chat.id}""")
+            db.commit()
+            db.close()
 
     match callback.data[0:11]:
         case 'answer_test':
@@ -277,6 +345,7 @@ def mainHandler(callback:CallbackQuery):
 
 @bot.message_handler(content_types=['location'])
 def FindDostoprim(message:Message):
+    registerUser(message)
     defaultmessages.GeoMessage(bot,message)
 
 

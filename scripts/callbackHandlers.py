@@ -1,3 +1,5 @@
+import sqlite3
+
 import telebot
 from telebot.types import Message
 
@@ -50,17 +52,32 @@ def toMainMenu_geo_click(bot:telebot.TeleBot,message:Message):
 
 # ----------------------------------
 def answer_test_click(bot:telebot.TeleBot,message:Message,values:list[str],tests:list[Test_module.Test]):
+    db = sqlite3.connect('../database/database.db')
+    c = db.cursor()
+    c.execute(f"""SELECT marks FROM test{values[0]} WHERE user_id = {message.chat.id}""")
+    usertestdata = c.fetchone()
+    usermarks = list(usertestdata[0])
+
 
     if (values[2] == values[3]):
+        usermarks[int(values[1])] = '1'
         print('Верный ответ')
-        tests[int(values[0])].answers.append(1)
+
     else:
-        tests[int(values[0])].answers.append(0)
+        usermarks[int(values[1])] = '0'
         print('Не верный ответ')
+
+    resylt = ''.join(usermarks)
+    c.execute(f"""UPDATE test{values[0]} SET marks = '{resylt}' WHERE user_id = {message.chat.id}""")
+    db.commit()
+
     if (int(values[1]) < len(tests[int(values[0])].questions) - 1):
         tests[int(values[0])].LoadQuestion(bot,message, int(values[1]) + 1)
     else:
         defaultmessages.FinishTest(bot,message, values, tests)
+
+    c.execute(f"""SELECT * FROM test{values[0]}""")
+    db.close()
 
 # ----------------------------------
 def zapovedniki_click(bot:telebot.TeleBot,message:Message):
