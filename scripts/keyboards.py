@@ -158,5 +158,5 @@ mainMenuKeyboard.add(types.InlineKeyboardButton('🗺 Ближайшая дос�
 mainMenuKeyboard.add(types.InlineKeyboardButton('📝 Тесты',callback_data='main_button3'))
 mainMenuKeyboard.add(types.InlineKeyboardButton('❓ Факты',callback_data='load_fakt_0'))
 mainMenuKeyboard.add(types.InlineKeyboardButton('🏞 Заповедники и нац. парки',callback_data='load_zapovedniki'))
-mainMenuKeyboard.add(types.InlineKeyboardButton('🎆 Гос. праздники',callback_data='load_prazdniki'))
+mainMenuKeyboard.add(types.InlineKeyboardButton('🎆 Памятные даты и праздники',callback_data='load_prazdniki'))
 mainMenuKeyboard.add(types.InlineKeyboardButton('📔 Общая информация',callback_data='main_button4'))
