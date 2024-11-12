@@ -48,7 +48,7 @@ def init_tests():
                                   'б) Брест\n'
                                   'в) Мотоль\n'
                                   'г) Пинск')
-    tests[0].questions[3].correctAnswer = 2
+    tests[0].questions[3].correctAnswer = 1
 
     tests[0].questions[4].text = ('В каком месте находится Брестская крепость?\n'
                                   'а) Каменец\n'
