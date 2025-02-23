@@ -12,7 +12,7 @@ from Fakt_module import Fakt
 from Test_module import Test
 from Test_module import TestStartPage
 
-bot = telebot.TeleBot('7918252571:AAHi5YwxTGIh73y3d-o0DI5Y5vh0amfiqpU')
+bot = telebot.TeleBot('')
 
 #db = sqlite3.connect('../database/database.db')
 #c = db.cursor()
